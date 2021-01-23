@@ -15,6 +15,13 @@ downloads/
 eggs/
 .eggs/
 lib/
+Scraper/scrapy.cfg
+Scraper/Scraper/__init__.py
+Scraper/Scraper/items.py
+Scraper/Scraper/middlewares.py
+Scraper/Scraper/pipelines.py
+Scraper/Scraper/settings.py
+Scraper/Scraper/spiders/__init__.py
 lib64/
 parts/
 sdist/
