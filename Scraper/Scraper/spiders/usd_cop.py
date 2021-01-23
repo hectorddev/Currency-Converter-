@@ -1,23 +1,12 @@
 import scrapy
-from functions import strSimple
+from functions import strSimple, meanDict
 
 #Paginas de dolar-pesos
 
+# investing = https://es.investing.com/currencies/usd-cop
+
 USD_COL = ['https://www.mataf.net/es/cambio/divisas-USD-COP','https://www.dolar-colombia.com/',
 'https://www.cotizacion.co/colombia/precio-del-dolar.php','https://dolar.wilkinsonpc.com.co/'] 
-#1 dolar_colombia = 'https://www.dolar-colombia.com/'
-#2 mataf = https://www.mataf.net/es/cambio/divisas-USD-COP
-#3 investing = https://es.investing.com/currencies/usd-cop
-#4 cotizacion = 'https://www.cotizacion.co/colombia/precio-del-dolar.php'
-#5 dolar_Web = https://dolar.wilkinsonpc.com.co/
-
-#Paginas de dolar-bitcoin
-
-# 1 investing = https://es.investing.com/crypto/bitcoin
-# 2 coin_market_cap = https://coinmarketcap.com/es/currencies/bitcoin/
-# 3 trading_view = https://es.tradingview.com/symbols/BTCUSD/
-# 4 market_watch = https://www.marketwatch.com/investing/cryptocurrency/btcusd
-# 5 coin_desk = https://www.coindesk.com/price/bitcoin
 
 #Paginas de dolar-bolivares
 
@@ -27,8 +16,8 @@ USD_COL = ['https://www.mataf.net/es/cambio/divisas-USD-COP','https://www.dolar-
 # 4 cuex = https://cuex.com/es/usd-ves
 # 5 exchange_rates = https://es.exchange-rates.org/Rate/USD/VES
 
-class scraper(scrapy.Spider):
-    name = 'Scraper'
+class usd_cop(scrapy.Spider):
+    name = 'usd_cop'
     start_urls = [
         'https://es.investing.com/currencies/usd-cop'
     ]
@@ -60,6 +49,12 @@ class scraper(scrapy.Spider):
     def dolar_web(self,response,**kwargs):
         dolar_web = response.xpath('//div[@class="row"]//span[@class="valor"]/a/h2/span[@class="sube-numero"]/text()').get()
         kwargs['dolar_web'] = strSimple(dolar_web)
-        yield kwargs    
+        mean_usd_cop = meanDict(kwargs)
+        yield {
+            'precio_usd_cop': kwargs,
+            'media_usd_cop':mean_usd_cop
+        }
+        
+  
 
  
