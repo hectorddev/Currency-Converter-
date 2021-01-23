@@ -1,11 +1,14 @@
 import scrapy
+from functions import trSimple
 
 #Paginas de dolar-pesos
 
-#1 dolar_colombia = https://www.dolar-colombia.com/
+USD_COL = ['https://www.mataf.net/es/cambio/divisas-USD-COP','https://www.dolar-colombia.com/',
+'https://www.cotizacion.co/colombia/precio-del-dolar.php','https://dolar.wilkinsonpc.com.co/'] 
+#1 dolar_colombia = 'https://www.dolar-colombia.com/'
 #2 mataf = https://www.mataf.net/es/cambio/divisas-USD-COP
 #3 investing = https://es.investing.com/currencies/usd-cop
-#4 cotizacion = https://www.cotizacion.co/colombia/precio-del-dolar.php
+#4 cotizacion = 'https://www.cotizacion.co/colombia/precio-del-dolar.php'
 #5 dolar_Web = https://dolar.wilkinsonpc.com.co/
 
 #Paginas de dolar-bitcoin
@@ -24,4 +27,19 @@ import scrapy
 # 4 cuex = https://cuex.com/es/usd-ves
 # 5 exchange_rates = https://es.exchange-rates.org/Rate/USD/VES
 
+class scraper(scrapy.Spider):
+    name = 'Scraper'
+    start_urls = [
+        'https://es.investing.com/currencies/usd-cop'
+    ]
+    custom_settings = {
+        'FEED_URI': 'currencies.json',
+        'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': 'utf-8',
+    }
 
+    def parse(self, response):
+        investing_currencies = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
+        yield {
+            'prueba': trSimple(investing_currencies)
+        }
