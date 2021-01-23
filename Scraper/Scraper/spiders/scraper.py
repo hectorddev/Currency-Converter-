@@ -39,7 +39,27 @@ class scraper(scrapy.Spider):
     }
 
     def parse(self, response):
-        investing_currencie = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
-        yield {
-            'investing':strSimple(investing_currencie)
-        }
+        investing_currency = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
+        yield response.follow(USD_COL[0], callback=self.mataf, cb_kwargs={'investing':strSimple(investing_currency)})
+
+    def mataf(self, response, **kwargs):
+        mataf_currency = response.xpath('//div[@class="col-md-4"]//table[contains(@class,"table")]//span[not(@class)]/meta[@itemprop="value"]/@content').getall()[1]
+        kwargs['mataf'] = strSimple(mataf_currency)
+        yield response.follow(USD_COL[1], callback=self.dolar_colombia ,cb_kwargs=kwargs)
+
+    def dolar_colombia(self,response, **kwargs):
+        dolar_colombia_currency = response.xpath('//div[@class="box"]/div[@class="box__content"]/h2/span/text()').get()
+        kwargs['dolar_colombia'] = strSimple(dolar_colombia_currency)
+        yield response.follow(USD_COL[2], callback=self.cotizacion, cb_kwargs=kwargs)
+
+    def cotizacion(self, response, **kwargs):
+        cotizacion_currency = response.xpath('//div[contains(@class,"col-xs-12")]/p/span/span[@id="convertido-dol-ch"]/text()').get()
+        kwargs['cotizacion.co'] = strSimple(cotizacion_currency)
+        yield response.follow(USD_COL[3], callback=self.dolar_web, cb_kwargs=kwargs)
+
+    def dolar_web(self,response,**kwargs):
+        dolar_web = response.xpath('//div[@class="row"]//span[@class="valor"]/a/h2/span[@class="sube-numero"]/text()').get()
+        kwargs['dolar_web'] = strSimple(dolar_web)
+        yield kwargs    
+
+ 
