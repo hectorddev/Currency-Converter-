@@ -9,7 +9,7 @@ def strSimple(currency):
         glassy = currency.replace(' ','')
         return float(glassy)
 
-    if currency.count('.') == 2:
+    if currency[1] == '.':
         gumball = currency.replace('.','')
         gumball_s = gumball.replace(',','.')
         return float(gumball_s)
