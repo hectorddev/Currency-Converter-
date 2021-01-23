@@ -1,5 +1,5 @@
 import scrapy
-from functions import trSimple
+from functions import strSimple
 
 #Paginas de dolar-pesos
 
@@ -39,7 +39,7 @@ class scraper(scrapy.Spider):
     }
 
     def parse(self, response):
-        investing_currencies = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
+        investing_currencie = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
         yield {
-            'prueba': trSimple(investing_currencies)
+            'investing':strSimple(investing_currencie)
         }
