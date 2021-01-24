@@ -4,6 +4,7 @@ from functions import meanDict, strSimple
 #Paginas de dolar-bitcoin
 
 # 1 investing = https://es.investing.com/crypto/bitcoin
+
 USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldprice.org/es/cryptocurrency-price/bitcoin-price',
 'https://www.marketwatch.com/investing/cryptocurrency/btcusd', 'https://www.coindesk.com/price/bitcoin']
 

@@ -8,14 +8,6 @@ from functions import strSimple, meanDict
 USD_COL = ['https://www.mataf.net/es/cambio/divisas-USD-COP','https://www.dolar-colombia.com/',
 'https://www.cotizacion.co/colombia/precio-del-dolar.php','https://dolar.wilkinsonpc.com.co/'] 
 
-#Paginas de dolar-bolivares
-
-# 1 investing = https://es.investing.com/currencies/usd-vef
-# 2 the_money_converter = https://themoneyconverter.com/ES/USD/VES
-# 3 valuta = https://es.valutafx.com/USD-VES.htm
-# 4 cuex = https://cuex.com/es/usd-ves
-# 5 exchange_rates = https://es.exchange-rates.org/Rate/USD/VES
-
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
     start_urls = [
