@@ -22,7 +22,7 @@ class usd_cop(scrapy.Spider):
         'https://es.investing.com/currencies/usd-cop'
     ]
     custom_settings = {
-        'FEED_URI': 'currencies.json',
+        'FEED_URI': 'currencies_cop.json',
         'FEED_FORMAT': 'json',
         'FEED_EXPORT_ENCODING': 'utf-8',
     }
@@ -51,10 +51,8 @@ class usd_cop(scrapy.Spider):
         kwargs['dolar_web'] = strSimple(dolar_web)
         mean_usd_cop = meanDict(kwargs)
         yield {
-            'precio_usd_cop': kwargs,
+            #'precio_usd_cop': kwargs,
             'media_usd_cop':mean_usd_cop
         }
-        
-  
-
+    
  

@@ -3,8 +3,11 @@ def meanDict(data):
     return round(mean,3)
 
 def strSimple(currency):
-
-    if '$' in currency:
+    """
+    a function that recieves a dirty str and cleans it, then returns a float
+    currency is str
+    """
+    if '$' in currency or '\n' in currency:
         another = currency.replace('$','')
         another_s = another.replace(',','')
         return float(another_s)
