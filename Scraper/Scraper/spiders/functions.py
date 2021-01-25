@@ -1,3 +1,23 @@
+import json
+import os
+
+json_files = r'../../../Json_files/'
+files_in = os.listdir(json_files)
+
+def create_json():  
+    dictionary ={} 
+
+    with open(json_files + "currencies.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+
+def verify():
+    if files_in:
+        f = os.path.join(json_files,files_in[0])
+        os.remove(f)
+        create_json()
+    else:
+        create_json()  
+
 def meanDict(data):
     mean = sum([i for i in data.values()])/len(data)
     return round(mean,3)
