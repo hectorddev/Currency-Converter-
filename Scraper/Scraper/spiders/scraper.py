@@ -4,8 +4,6 @@ from functions import strSimple, meanDict, verify
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-verify()
-
 #Paginas de dolar-pesos
 
 # investing = https://es.investing.com/currencies/usd-cop
@@ -27,6 +25,8 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
 PATH = r'../../../Json_files/currencies.json'
+
+verify()
 
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
