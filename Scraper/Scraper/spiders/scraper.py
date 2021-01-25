@@ -1,4 +1,5 @@
 import scrapy
+import json
 from functions import strSimple, meanDict
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -23,17 +24,21 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
+dictionary ={} 
+
+with open("currencies.json", "w") as outfile: 
+    json.dump(dictionary, outfile)
 
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
     start_urls = [
         'https://es.investing.com/currencies/usd-cop'
     ]
-    custom_settings = {
-        'FEED_URI': 'currencies_cop.json',
-        'FEED_FORMAT': 'json',
-        'FEED_EXPORT_ENCODING': 'utf-8',
-    }
+    #custom_settings = {
+        #'FEED_URI': 'currencies.json',
+        #'FEED_FORMAT': 'json',
+        #'FEED_EXPORT_ENCODING': 'utf-8',
+    #}
     
     def parse(self, response):
         investing_currency = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
@@ -57,22 +62,24 @@ class usd_cop(scrapy.Spider):
     def dolar_web(self,response,**kwargs):
         dolar_web = response.xpath('//div[@class="row"]//span[@class="valor"]/a/h2/span[@class="sube-numero"]/text()').get()
         kwargs['dolar_web'] = strSimple(dolar_web)
-        mean_usd_cop = meanDict(kwargs)
-        yield {
-            'precio_usd_cop': kwargs,
-            'media_usd_cop':mean_usd_cop
-        }
+        mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
+        
+        with open('currencies.json', 'r+') as f:
+            data = json.load(f)
+            data.update(mean_usd_cop)
+            f.seek(0)
+            json.dump(data,f)
 
 class usd_btc(scrapy.Spider):
     name = 'usd_btc'
     start_urls = [
         'https://es.investing.com/crypto/bitcoin'
     ]
-    custom_settings = {
-        'FEED_URI': 'currencies_btc.json',
-        'FEED_FORMAT': 'json',
-        'FEED_EXPORT_ENCODING': 'utf-8',
-    }
+    #custom_settings = {
+        #'FEED_URI': 'currencies_btc.json',
+        #'FEED_FORMAT': 'json',
+        #'FEED_EXPORT_ENCODING': 'utf-8',
+    #}
 
     def parse(self, response):
         investing_currency_btc = response.xpath('//div[@class="inlineblock"]/div[contains(@class,"top bold")]/span/span/text()').get()    
@@ -96,22 +103,24 @@ class usd_btc(scrapy.Spider):
     def coin_desk(self, response, **kwargs):
         coin_desk_currency_btc = response.xpath('//div[@class="data-definition"]/div[@class="price-large"]/text()').get()
         kwargs['coin_desk'] = strSimple(coin_desk_currency_btc)
-        mean_usd_btc = meanDict(kwargs)
-        yield{
-            'prices_btc': kwargs,
-            'mean_usd_btc': mean_usd_btc
-        }  
+        mean_usd_btc = {'mean_usd_btc': meanDict(kwargs)}
+
+        with open('currencies.json', 'r+') as f:
+            data = json.load(f)
+            data.update(mean_usd_btc)
+            f.seek(0)
+            json.dump(data,f)
 
 class usd_ves(scrapy.Spider):
     name = 'usd_ves'
     start_urls = [
         'https://es.investing.com/currencies/usd-vef'
     ]
-    custom_settings = {
-        'FEED_URI': 'currencies_ves.json',
-        'FEED_FORMAT': 'json',
-        'FEED_EXPORT_ENCODING': 'utf-8',
-    }
+    #custom_settings = {
+        #'FEED_URI': 'currencies_ves.json',
+        #'FEED_FORMAT': 'json',
+        #'FEED_EXPORT_ENCODING': 'utf-8',
+    #}
 
     def parse(self, response):
         investing_currency_ves = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
@@ -125,11 +134,13 @@ class usd_ves(scrapy.Spider):
     def exchange_rates(self, response, **kwargs):
         exchange_rates_ves = response.xpath('//div[@class="table-responsive"]/table/tbody/tr[1]/td[contains(@class,"result")]/text()').get()
         kwargs['exchange_rate'] = strSimple(exchange_rates_ves)
-        mean_usd_ves = meanDict(kwargs)
-        yield{
-            'test': kwargs,
-            'mean': mean_usd_ves
-        }
+        mean_usd_ves = {'mean_usd_ves': meanDict(kwargs)}
+
+        with open('currencies.json', 'r+') as f:
+            data = json.load(f)
+            data.update(mean_usd_ves)
+            f.seek(0)
+            json.dump(data,f)
 
 proccess = CrawlerProcess(get_project_settings())
 proccess.crawl(usd_cop)
