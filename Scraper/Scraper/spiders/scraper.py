@@ -26,8 +26,6 @@ USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org
 
 PATH = r'../../../Json_files/currencies.json'
 
-verify()
-
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
     start_urls = [
@@ -125,9 +123,3 @@ class usd_ves(scrapy.Spider):
             data.update(mean_usd_ves)
             f.seek(0)
             json.dump(data,f)
-
-proccess = CrawlerProcess(get_project_settings())
-proccess.crawl(usd_cop)
-proccess.crawl(usd_btc)
-proccess.crawl(usd_ves)
-proccess.start()
