@@ -53,8 +53,14 @@ class usd_cop(scrapy.Spider):
 
     def dolar_web(self,response,**kwargs):
         dolar_web = response.xpath('//div[@class="row"]//span[@class="valor"]/a/h2/span[@class="sube-numero"]/text()').get()
-        kwargs['dolar_web'] = strSimple(dolar_web)
-        mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
+        dolar_web1 = response.xpath('//div[@class="row"]/div/span/a/h2/span[@class="baja-numero"]/text()').get()
+
+        if dolar_web:
+            kwargs['dolar_web'] = strSimple(dolar_web)
+            mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
+        else:
+            kwargs['dolar_web'] = strSimple(dolar_web1)
+            mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
         
         with open(PATH, 'r+') as f:
             data = json.load(f)
