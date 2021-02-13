@@ -1,8 +1,6 @@
 import scrapy
 import json
 from functions import strSimple, meanDict, verify
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
 
 #Paginas de dolar-pesos
 

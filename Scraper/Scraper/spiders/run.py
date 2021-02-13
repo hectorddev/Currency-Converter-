@@ -1,4 +1,3 @@
-import sched, time
 from scraper import usd_cop, usd_btc, usd_ves
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
