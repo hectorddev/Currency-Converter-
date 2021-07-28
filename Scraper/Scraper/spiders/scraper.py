@@ -1,6 +1,6 @@
 import scrapy
 import json
-from functions import strSimple, meanDict, verify
+from functions import strSimple, meanDict
 
 #Paginas de dolar-pesos
 
