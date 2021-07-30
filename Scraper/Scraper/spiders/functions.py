@@ -7,7 +7,7 @@ files_in = os.listdir(json_files)
 def create_json():  
     dictionary ={} 
 
-    with open(json_files + "currencies.json", "w") as outfile:
+    with open(json_files + "mean_currencies.json", "w") as outfile:
         json.dump(dictionary, outfile)
 
 def verify():
