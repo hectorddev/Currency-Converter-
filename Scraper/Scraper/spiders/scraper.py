@@ -56,9 +56,11 @@ class usd_cop(scrapy.Spider):
         if dolar_web:
             kwargs['dolar_web'] = strSimple(dolar_web)
             mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
+            min_max = {'min_usd_cop': min(kwargs.values()),'max_usd_cop':max(kwargs.values())}
         else:
             kwargs['dolar_web'] = strSimple(dolar_web1)
             mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
+            min_max = {'min_usd_cop': min(kwargs.values()),'max_usd_cop':max(kwargs.values())}
         
         writeJson(PATH,'currencies.json',mean_usd_cop)
 
@@ -91,6 +93,7 @@ class usd_btc(scrapy.Spider):
         coin_desk_currency_btc = response.xpath('//div[@class="data-definition"]/div[@class="price-large"]/text()').get()
         kwargs['coin_desk'] = strSimple(coin_desk_currency_btc)
         mean_usd_btc = {'mean_usd_btc': meanDict(kwargs)}
+        min_max = {'min_usd_btc': min(kwargs.values()),'max_usd_btc':max(kwargs.values())}
 
         writeJson(PATH,'currencies.json',mean_usd_btc)
 
@@ -113,5 +116,6 @@ class usd_ves(scrapy.Spider):
         exchange_rates_ves = response.xpath('//div[@class="table-responsive"]/table/tbody/tr[1]/td[contains(@class,"result")]/text()').get()
         kwargs['exchange_rate'] = strSimple(exchange_rates_ves)
         mean_usd_ves = {'mean_usd_ves': meanDict(kwargs)}
+        min_max = {'min_usd_ves': min(kwargs.values()),'max_usd_ves':max(kwargs.values())}
 
         writeJson(PATH,'currencies.json',mean_usd_ves)
