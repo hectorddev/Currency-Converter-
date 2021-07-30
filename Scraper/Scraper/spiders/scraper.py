@@ -1,6 +1,6 @@
 import scrapy
 import json
-from functions import strSimple, meanDict
+from functions import strSimple, meanDict, writeJson
 
 #Paginas de dolar-pesos
 
@@ -22,7 +22,7 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
-PATH = r'../../../Json_files/currencies.json'
+PATH = r'../../../Json_files/'
 
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
@@ -60,11 +60,7 @@ class usd_cop(scrapy.Spider):
             kwargs['dolar_web'] = strSimple(dolar_web1)
             mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
         
-        with open(PATH, 'r+') as f:
-            data = json.load(f)
-            data.update(mean_usd_cop)
-            f.seek(0)
-            json.dump(data,f)
+        writeJson(PATH,'currencies.json',mean_usd_cop)
 
 class usd_btc(scrapy.Spider):
     name = 'usd_btc'
@@ -96,11 +92,7 @@ class usd_btc(scrapy.Spider):
         kwargs['coin_desk'] = strSimple(coin_desk_currency_btc)
         mean_usd_btc = {'mean_usd_btc': meanDict(kwargs)}
 
-        with open(PATH, 'r+') as f:
-            data = json.load(f)
-            data.update(mean_usd_btc)
-            f.seek(0)
-            json.dump(data,f)
+        writeJson(PATH,'currencies.json',mean_usd_btc)
 
 class usd_ves(scrapy.Spider):
     name = 'usd_ves'
@@ -122,8 +114,4 @@ class usd_ves(scrapy.Spider):
         kwargs['exchange_rate'] = strSimple(exchange_rates_ves)
         mean_usd_ves = {'mean_usd_ves': meanDict(kwargs)}
 
-        with open(PATH, 'r+') as f:
-            data = json.load(f)
-            data.update(mean_usd_ves)
-            f.seek(0)
-            json.dump(data,f)
+        writeJson(PATH,'currencies.json',mean_usd_ves)

@@ -22,6 +22,13 @@ def meanDict(data):
     mean = sum([i for i in data.values()])/len(data)
     return round(mean,3)
 
+def writeJson(path,name,dicti):
+    with open(path + name, 'r+') as f:
+            data = json.load(f)
+            data.update(dicti)
+            f.seek(0)
+            json.dump(data,f)
+
 def strSimple(currency):
     """
     a function that recieves a dirty str and cleans it, then returns a float
