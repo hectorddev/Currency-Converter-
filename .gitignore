@@ -5,7 +5,9 @@ __pycache__/
 #Json folder 
 Json_files/
 #history folder
-.history_files/
+history_files/
+#pycache from scraper
+__pycache__/
 # C extensions
 *.so
 
