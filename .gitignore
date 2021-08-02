@@ -2,7 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+#Json folder 
+Json_files/
+#history folder
+.history_files/
 # C extensions
 *.so
 

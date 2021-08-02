@@ -1,8 +1,15 @@
 import json
 import os
+import csv
 
 json_files = r'../../../Json_files/'
-files_in = os.listdir(json_files)
+csv_files = r'../../../history_files/'
+csv_files_in = os.listdir(csv_files)
+json_files_in = os.listdir(json_files)
+
+def create_csv():
+    with open(csv_files + "mean_history.csv", 'w') as outfile:
+        writer = csv.writer(outfile)
 
 def create_json():  
     dictionary ={} 
@@ -11,8 +18,10 @@ def create_json():
         json.dump(dictionary, outfile)
 
 def verify():
-    if files_in:
-        f = os.path.join(json_files,files_in[0])
+    if not csv_files_in:
+        create_csv()
+    if json_files_in:
+        f = os.path.join(json_files,json_files_in[0])
         os.remove(f)
         create_json()
     else:
@@ -28,6 +37,15 @@ def writeJson(path,name,dicti):
             data.update(dicti)
             f.seek(0)
             json.dump(data,f)
+
+def writeCsv():
+    with open(json_files + "mean_currencies.json", 'r+') as f:
+        data = json.load(f)
+        rows = [i for i in data.keys()]
+        content = [i for i in data.values()]
+    with open(csv_files + "mean_history.csv", 'a',newline='') as outfile:
+        writer = csv.DictWriter(outfile,fieldnames=rows)
+        writer.writerow({rows[0]:content[0],rows[1]:content[1],rows[2]:content[2]})  
 
 def strSimple(currency):
     """
