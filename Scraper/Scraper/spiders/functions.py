@@ -59,8 +59,8 @@ def writeJson(path,name,dicti):
 
 def writeCsv(json_path,json_filename,csv_path,csv_filename):
     """
-    A function that recieves 4 parameters that indicates the path and the name of the JSON
-    file that we wanna read and the path and the name of the CSV file that we wanna write
+    A function that recieves 4 parameters that indicates the path and the name of the JSON file
+    that we wanna read and the path and the name of the CSV file that we wanna write
     """
     #Reading json file
     with open(json_path + json_filename, 'r+') as f:
