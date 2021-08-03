@@ -1,23 +1,36 @@
 import json
 import os
 import csv
+from datetime import datetime
 
 json_files = r'../../../Json_files/'
 csv_files = r'../../../history_files/'
 csv_files_in = os.listdir(csv_files)
 json_files_in = os.listdir(json_files)
+date =  datetime.now().strftime("%Y-%m-%d//%I:%M:%S%p")
 
 def create_csv():
+    """
+    A function that creates a csv file
+    """
     with open(csv_files + "mean_history.csv", 'w') as outfile:
         writer = csv.writer(outfile)
+        writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
 
-def create_json():  
+def create_json():
+    """
+    A function that create a json file
+    """  
     dictionary ={} 
 
     with open(json_files + "mean_currencies.json", "w") as outfile:
         json.dump(dictionary, outfile)
 
 def verify():
+    """
+    A function that verfies if the csv and json files are in his folders
+    if not it calls the function that create it 
+    """
     if not csv_files_in:
         create_csv()
     if json_files_in:
@@ -28,24 +41,37 @@ def verify():
         create_json()  
 
 def meanDict(data):
+    """
+    A function that calculate the mean of a dictionary
+    """
     mean = sum([i for i in data.values()])/len(data)
     return round(mean,3)
 
 def writeJson(path,name,dicti):
+    """
+    A function that write scraped data in a json file
+    """
     with open(path + name, 'r+') as f:
             data = json.load(f)
             data.update(dicti)
             f.seek(0)
             json.dump(data,f)
 
-def writeCsv():
-    with open(json_files + "mean_currencies.json", 'r+') as f:
+def writeCsv(json_path,json_filename,csv_path,csv_filename):
+    """
+    A function that recieves 4 parameters that indicates the path and the name of the JSON
+    file that we wanna read and the path and the name of the CSV file that we wanna write
+    """
+    #Reading json file
+    with open(json_path + json_filename, 'r+') as f:
         data = json.load(f)
-        rows = [i for i in data.keys()]
-        content = [i for i in data.values()]
-    with open(csv_files + "mean_history.csv", 'a',newline='') as outfile:
-        writer = csv.DictWriter(outfile,fieldnames=rows)
-        writer.writerow({rows[0]:content[0],rows[1]:content[1],rows[2]:content[2]})  
+        content = sorted([i for i in data.values()])
+        content.append(date)
+
+    #Adding data in a csv file   
+    with open(csv_path + csv_filename, 'a',newline='') as outfile:
+        writer = csv.writer(outfile)
+        writer.writerow(content)  
 
 def strSimple(currency):
     """

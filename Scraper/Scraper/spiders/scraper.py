@@ -1,5 +1,5 @@
 import scrapy
-from functions import strSimple, meanDict, writeJson, writeCsv
+from functions import strSimple, meanDict, writeJson,writeCsv
 
 #Paginas de dolar-pesos
 
@@ -21,7 +21,10 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
-PATH = r'../../../Json_files/'
+JSON_PATH = r'../../../Json_files/'
+JSON_FILENAME = 'mean_currencies.json'
+CSV_PATH = r'../../../history_files/'
+CSV_FILENAME = 'mean_history.csv'
 
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
@@ -61,7 +64,7 @@ class usd_cop(scrapy.Spider):
             mean_usd_cop = {'mean_usd_cop': meanDict(kwargs)}
             min_max = {'min_usd_cop': min(kwargs.values()),'max_usd_cop':max(kwargs.values())}
         
-        writeJson(PATH,'mean_currencies.json',mean_usd_cop)
+        writeJson(JSON_PATH, JSON_FILENAME, mean_usd_cop)
 
 class usd_btc(scrapy.Spider):
     name = 'usd_btc'
@@ -94,7 +97,7 @@ class usd_btc(scrapy.Spider):
         mean_usd_btc = {'mean_usd_btc': meanDict(kwargs)}
         min_max = {'min_usd_btc': min(kwargs.values()),'max_usd_btc':max(kwargs.values())}
 
-        writeJson(PATH,'mean_currencies.json',mean_usd_btc)
+        writeJson(JSON_PATH, JSON_FILENAME ,mean_usd_btc)
 
 class usd_ves(scrapy.Spider):
     name = 'usd_ves'
@@ -117,4 +120,4 @@ class usd_ves(scrapy.Spider):
         mean_usd_ves = {'mean_usd_ves': meanDict(kwargs)}
         min_max = {'min_usd_ves': min(kwargs.values()),'max_usd_ves':max(kwargs.values())}
 
-        writeJson(PATH,'mean_currencies.json',mean_usd_ves)
+        writeJson(JSON_PATH, JSON_FILENAME ,mean_usd_ves)
