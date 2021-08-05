@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/hecatonquiro-yolo/Currency-Converter-/issues"
   },
-  "homepage": "https://github.com/hecatonquiro-yolo/Currency-Converter-#readme"
+  "homepage": "https://github.com/hecatonquiro-yolo/Currency-Converter-#readme",
+  "dependencies": {
+    "python-shell": "^3.0.0"
+  }
 }
