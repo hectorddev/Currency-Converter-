@@ -13,6 +13,8 @@ Json_files/
 history_files/
 # C extensions
 *.so
+#node modules
+node_modules/
 
 # Distribution / packaging
 .Python
