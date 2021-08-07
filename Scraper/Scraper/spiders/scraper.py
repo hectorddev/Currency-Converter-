@@ -1,5 +1,5 @@
 import scrapy
-from functions import strSimple, meanDict, writeJson,writeCsv
+from functions import strSimple, meanDict, writeJson
 
 #Paginas de dolar-pesos
 
