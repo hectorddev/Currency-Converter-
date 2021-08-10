@@ -15,8 +15,12 @@ def verify_folder():
     if not, it creates those folders
     """
     if not 'history_files' in wdir_in and not 'Json_files' in wdir_in:
-        os.mkdir(os.path.join(wdir,'history_files'))
-        os.mkdir(os.path.join(wdir,'Json_files'))
+        try:
+            os.mkdir(os.path.join(wdir,'history_files'))
+            os.mkdir(os.path.join(wdir,'Json_files'))
+        
+        except FileExistsError as e:
+            pass    
 
 def create_csv():
     """
