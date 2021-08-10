@@ -87,7 +87,7 @@ class usd_btc(scrapy.Spider):
         yield response.follow(USD_BTC[2], callback = self.market_watch, cb_kwargs= kwargs)
 
     def market_watch(self, response, **kwargs):
-        market_watch_currency_btc = response.xpath('//div[@class="intraday__data"]/h3/bg-quote/text()').get()
+        market_watch_currency_btc = response.xpath('//div[@class="intraday__data"]/h2/bg-quote/text()').get()
         kwargs['market_watch'] = strSimple(market_watch_currency_btc)
         yield response.follow(USD_BTC[3], callback = self.coin_desk, cb_kwargs= kwargs)
 

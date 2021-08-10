@@ -3,11 +3,24 @@ import os
 import csv
 from datetime import datetime
 
+wdir = r'../../../'
+wdir_in = os.listdir(wdir)
 json_files = r'../../../Json_files/'
 csv_files = r'../../../history_files/'
-csv_files_in = os.listdir(csv_files)
-json_files_in = os.listdir(json_files)
 date =  datetime.now().strftime("%Y-%m-%d//%I:%M:%S%p")
+
+def verify_folder():
+    """
+    a function that verifies if exits the folders that we need in the project
+    if not, it creates those folders
+    """
+    if not 'history_files' in wdir_in and not 'Json_files' in wdir_in:
+        try:
+            os.mkdir(os.path.join(wdir,'history_files'))
+            os.mkdir(os.path.join(wdir,'Json_files'))
+        
+        except FileExistsError as e:
+            pass    
 
 def create_csv():
     """
@@ -31,14 +44,15 @@ def verify():
     A function that verfies if the csv and json files are in his folders
     if not it calls the function that create it 
     """
-    if not csv_files_in:
+    if not os.listdir(csv_files):
         create_csv()
-    if json_files_in:
-        f = os.path.join(json_files,json_files_in[0])
+    if os.listdir(json_files):
+        f = os.path.join(json_files,os.listdir(json_files)[0])
         os.remove(f)
         create_json()
     else:
         create_json()  
+
 
 def meanDict(data):
     """
