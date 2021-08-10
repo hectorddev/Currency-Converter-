@@ -11,10 +11,14 @@ CSV_FILENAME = 'mean_history.csv'
 def task():
     verify_folder()
     verify()
-    proccess = CrawlerProcess(get_project_settings())
-    proccess.crawl(usd_cop)
-    proccess.crawl(usd_btc)
-    proccess.crawl(usd_ves)
-    proccess.start()
+    try:
+        proccess = CrawlerProcess(get_project_settings())
+        proccess.crawl(usd_cop)
+        proccess.crawl(usd_btc)
+        proccess.crawl(usd_ves)
+        proccess.start()
+    except Exception as e:
+        print(e)    
     writeCsv(JSON_PATH,JSON_FILENAME,CSV_PATH,CSV_FILENAME)
+
 task()
