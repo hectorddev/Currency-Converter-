@@ -4,7 +4,7 @@ from scrapy.utils.project import get_project_settings
 from functions import verify, writeCsv, verify_folder
 import os
 
-WDIR = os.getcwd()[:-24]
+WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
 JSON_PATH = os.path.join(WDIR,'Json_files')
 JSON_FILENAME = 'mean_currencies.json'
 CSV_PATH = os.path.join(WDIR,'history_files')
