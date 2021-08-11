@@ -2,10 +2,12 @@ from scraper import usd_cop, usd_btc, usd_ves
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from functions import verify, writeCsv, verify_folder
+import os
 
-JSON_PATH = r'../../../Json_files/'
+WDIR = os.getcwd()[:-24]
+JSON_PATH = os.path.join(WDIR,'Json_files')
 JSON_FILENAME = 'mean_currencies.json'
-CSV_PATH = r'../../../history_files/'
+CSV_PATH = os.path.join(WDIR,'history_files')
 CSV_FILENAME = 'mean_history.csv'
 
 def task():
