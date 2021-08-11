@@ -1,4 +1,5 @@
 import scrapy
+import os
 from functions import strSimple, meanDict, writeJson
 
 #Paginas de dolar-pesos
@@ -21,10 +22,9 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
-JSON_PATH = r'../../../Json_files/'
+WDIR = os.getcwd()[:-24]
+JSON_PATH = os.path.join(WDIR,'Json_files')
 JSON_FILENAME = 'mean_currencies.json'
-CSV_PATH = r'../../../history_files/'
-CSV_FILENAME = 'mean_history.csv'
 
 class usd_cop(scrapy.Spider):
     name = 'usd_cop'
