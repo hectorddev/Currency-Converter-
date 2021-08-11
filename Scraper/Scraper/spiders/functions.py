@@ -3,7 +3,7 @@ import os
 import csv
 from datetime import datetime
 
-WDIR = os.getcwd()[:-24]
+WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
 WDIR_IN = os.listdir(WDIR)
 JSON_FILES = os.path.join(WDIR,'Json_files')
 CSV_FILES = os.path.join(WDIR,'history_files')

@@ -22,7 +22,7 @@ USD_BTC = ['https://coinmarketcap.com/es/currencies/bitcoin/', 'https://goldpric
 
 USD_VES = ['https://es.valutafx.com/USD-VES.htm', 'https://es.exchange-rates.org/Rate/USD/VES']
 
-WDIR = os.getcwd()[:-24]
+WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
 JSON_PATH = os.path.join(WDIR,'Json_files')
 JSON_FILENAME = 'mean_currencies.json'
 
