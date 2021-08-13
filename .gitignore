@@ -13,14 +13,8 @@ Json_files/
 history_files/
 # C extensions
 *.so
-<<<<<<< HEAD
 #Node Modules
 node_modules
-=======
-#node modules
-node_modules/
-
->>>>>>> master
 # Distribution / packaging
 .Python
 build/

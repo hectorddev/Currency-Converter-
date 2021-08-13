@@ -3,8 +3,14 @@ const path = require('path')
 const ruta = path.join(__dirname, '/Scraper/Scraper/spiders/run.py')
 
 
-exec(ruta, function(err){
-    if(err){
-        console.log(err)
-    }
-})
+async function execScript() {
+    await exec(ruta, function(err, stdout, stderr){
+        if(err){
+            console.log(err)
+        }
+        console.log(`stdout ${stdout}`)
+        console.log(`stderr${stderr}`)
+    })
+}
+
+execScript()
