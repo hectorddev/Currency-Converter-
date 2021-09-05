@@ -1,7 +1,7 @@
 from scraper import usd_cop, usd_btc, usd_ves
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from functions import verify, writeCsv, verify_folder
+from functions import verify, verify_folder
 import os
 
 WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
@@ -18,6 +18,5 @@ def task():
     proccess.crawl(usd_btc)
     proccess.crawl(usd_ves)
     proccess.start()    
-    writeCsv(JSON_PATH,JSON_FILENAME,CSV_PATH,CSV_FILENAME)
 
 task()

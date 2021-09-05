@@ -2,11 +2,13 @@ import json
 import os
 import csv
 from datetime import datetime
+import pandas as pd
 
 WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
 WDIR_IN = os.listdir(WDIR)
-JSON_FILES = os.path.join(WDIR,'Json_files')
+JSON_FILES = os.path.join(WDIR,'json_files')
 CSV_FILES = os.path.join(WDIR,'history_files')
+RAW_DATA = os.path.join(WDIR,'raw_data')
 DATE =  datetime.now().strftime("%Y-%m-%d//%I:%M:%S%p")
 
 def verify_folder():
@@ -14,10 +16,11 @@ def verify_folder():
     a function that verifies if exits the folders that we need in the project
     if not, it creates those folders
     """
-    if not 'history_files' in WDIR_IN and not 'Json_files' in WDIR_IN:
+    if not 'history_files' in WDIR_IN and not 'json_files' in WDIR_IN and not 'raw_data' in WDIR_IN:
         try:
             os.mkdir(JSON_FILES)
             os.mkdir(CSV_FILES)
+            os.mkdir(RAW_DATA)
         
         except FileExistsError as e:
             pass    
@@ -53,14 +56,6 @@ def verify():
     else:
         create_json()  
 
-
-def meanDict(data):
-    """
-    A function that calculate the mean of a dictionary
-    """
-    mean = sum([i for i in data.values()])/len(data)
-    return round(mean,3)
-
 def writeJson(path,name,dicti):
     """
     A function that write scraped data in a json file
@@ -87,41 +82,6 @@ def writeCsv(json_path,json_filename,csv_path,csv_filename):
         writer = csv.writer(outfile)
         writer.writerow(content)  
 
-def strSimple(currency):
-    """
-    a function that recieves a dirty str and cleans it, then returns a float
-    currency is str
-    """
-    if 'E' in currency:
-        currency = currency.replace('VES','')
-        gumball = currency.replace('.','')
-        gumball_s = gumball.replace(',','.')
-        return float(gumball_s)
-
-    if '\r' in currency:
-        currency = currency.replace('\n','')
-        currency = currency.replace('\r','')
-        gumball = currency.replace('.','')
-        gumball_s = gumball.replace(',','.')
-        return float(gumball_s)
-
-    if '$' in currency or '\n' in currency:
-        another = currency.replace('$','')
-        another_s = another.replace(',','')
-        return float(another_s)
-
-    if ' ' in currency:
-        glassy = currency.replace(' ','')
-        return float(glassy)
-
-    if currency[1] == '.' or currency[2] == '.' or currency.count('.') >= 2:
-        gumball = currency.replace('.','')
-        gumball_s = gumball.replace(',','.')
-        return float(gumball_s)
-
-    else:
-        wave = currency.replace(',','')
-        return float(wave)
     
     
 

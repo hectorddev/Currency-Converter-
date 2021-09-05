@@ -1,3 +1,4 @@
+raw_data/
 # Byte-compiled / optimized / LL files
 __pycache__/
 *.py[cod]
