@@ -37,6 +37,7 @@ class usd_cop(scrapy.Spider):
 
     def mataf(self, response, **kwargs):
         mataf_currency = response.xpath('//div[@class="table-responsive"]/table/tbody[not(@class)]/tr[@itemprop="mainEntity"][1]/td[4]/span/meta[@itemprop="value"]/@content').get()
+        mataf_currency = mataf_currency.replace(' ',',')
         kwargs['name'].append('mataf')
         kwargs['value'].append(mataf_currency)
         yield response.follow(USD_COL[1], callback=self.dolar_colombia ,cb_kwargs=kwargs)

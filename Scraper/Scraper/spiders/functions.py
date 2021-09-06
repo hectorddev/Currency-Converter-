@@ -4,12 +4,25 @@ import csv
 from datetime import datetime
 import pandas as pd
 
+#Verificacion de archivos
+
 WDIR = os.getcwd()[:-24] if os.getcwd()[-7:] == 'spiders' else os.getcwd()
 WDIR_IN = os.listdir(WDIR)
+
+#Carpetas de archivos
+
 JSON_FILES = os.path.join(WDIR,'json_files')
 CSV_FILES = os.path.join(WDIR,'history_files')
 RAW_DATA = os.path.join(WDIR,'raw_data')
+
+#Fecha
+
 DATE =  datetime.now().strftime("%Y-%m-%d//%I:%M:%S%p")
+
+#Nombres de archivos
+
+JSON_FILENAME = 'mean_currencies.json'
+CSV_FILENAME = 'mean_history.csv'
 
 def verify_folder():
     """
@@ -29,7 +42,7 @@ def create_csv():
     """
     A function that creates a csv file
     """
-    with open(os.path.join(CSV_FILES, 'mean_history.csv'), 'w') as outfile:
+    with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
         writer = csv.writer(outfile)
         writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
 
@@ -37,9 +50,9 @@ def create_json():
     """
     A function that create a json file
     """  
-    dictionary ={} 
+    dictionary ={}
 
-    with open(os.path.join(JSON_FILES, 'mean_currencies.json'), "w") as outfile:
+    with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
         json.dump(dictionary, outfile)
 
 def verify():
@@ -56,34 +69,70 @@ def verify():
     else:
         create_json()  
 
-def writeJson(path,name,dicti):
+def _writeJson(data):
     """
-    A function that write scraped data in a json file
+    A function that save transformed data in a json file
+    it recieves a dictionary
     """
-    with open(os.path.join(path,name), 'r+') as f:
-            data = json.load(f)
-            data.update(dicti)
+    with open(os.path.join(JSON_FILES,JSON_FILENAME), 'r+') as f:
+            content = json.load(f)
+            content.update(data)
             f.seek(0)
             json.dump(data,f)
 
-def writeCsv(json_path,json_filename,csv_path,csv_filename):
+def _writeCsv(data):
     """
-    A function that recieves 4 parameters that indicates the path and the name of the JSON file
-    that we wanna read and the path and the name of the CSV file that we wanna write
+    A function that recieves the save transformed data in a csv file
+    it recieves a list
     """
-    #Reading json file
-    with open(os.path.join(json_path,json_filename), 'r+') as f:
-        data = json.load(f)
-        content = sorted([i for i in data.values()])
-        content.append(DATE)
-
+    content = sorted(data)
+    content.append(DATE)
     #Adding data in a csv file   
-    with open(os.path.join(csv_path,csv_filename), 'a',newline='') as outfile:
+    with open(os.path.join(CSV_FILES,CSV_FILENAME), 'a',newline='') as outfile:
         writer = csv.writer(outfile)
         writer.writerow(content)  
 
-    
-    
+def _transform_ves(filename):
+    """
+    A function that transform raw data into a clean data using pandas
+    it recieves a list and returns an int
+    """
+    df = pd.read_csv(filename)
+    transform = (df['value']
+                .apply(lambda x: x.replace('VES',''))
+                .apply(lambda x: x.replace('\r',''))
+                .apply(lambda x: x.replace('\n',''))
+                .apply(lambda x: x.replace(' ',''))
+                .apply(lambda x: x.replace('.',''))
+                .apply(lambda x: int(x[:7]) if x.count(',') >= 1 else int(x)) 
+                )
+    df['value'] = transform 
+    return int(df['value'].mean())           
 
+def _transform_btc_cop(filename):
+    """
+    A function that transform raw data into clean data usinf pandas
+    it recieves a list and return an int
+    """
+    df = pd.read_csv(filename)
+    transform = (df['value']
+                .apply(lambda x: x.replace(',','.'))
+                .apply(lambda x: x.replace('$',''))
+                .apply(lambda x: x.replace('\n',''))
+                .apply(lambda x: x.replace(' ',''))
+                .apply(lambda x: x[:x.find('.')] + x[x.find('.') + 1:])
+                .apply(lambda x: int(x[:x.find('.')]) if '.' in x else int(x))
+                )
+    df['value'] = transform 
+    return int(df['value'].mean())
 
-    
+def transform_data():
+    """
+    The main proccess that transform all the data collected and save 
+    that data in csv history file and json file
+    """
+    mean_usd_cop = _transform_btc_cop(os.path.join(RAW_DATA,'raw_usd_cop.csv'))
+    mean_usd_btc = _transform_btc_cop(os.path.join(RAW_DATA,'raw_usd_btc.csv'))
+    mean_usd_ves = _transform_ves(os.path.join(RAW_DATA,'raw_usd_ves.csv'))
+    _writeCsv([mean_usd_btc,mean_usd_cop,mean_usd_ves])
+    _writeJson({'mean_usd_cop':mean_usd_cop,'mean_usd_btc':mean_usd_btc,'mean_usd_ves':mean_usd_ves})
