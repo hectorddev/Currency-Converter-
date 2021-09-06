@@ -14,6 +14,7 @@ WDIR_IN = os.listdir(WDIR)
 JSON_FILES = os.path.join(WDIR,'json_files')
 CSV_FILES = os.path.join(WDIR,'history_files')
 RAW_DATA = os.path.join(WDIR,'raw_data')
+CLEAN_DATA = os.path.join(WDIR,'clean_data')
 
 #Fecha
 
@@ -29,11 +30,12 @@ def verify_folder():
     a function that verifies if exits the folders that we need in the project
     if not, it creates those folders
     """
-    if not 'history_files' in WDIR_IN and not 'json_files' in WDIR_IN and not 'raw_data' in WDIR_IN:
+    if not 'history_files' in WDIR_IN and not 'json_files' in WDIR_IN and not 'raw_data' in WDIR_IN and not 'clean_data' in WDIR_IN:
         try:
             os.mkdir(JSON_FILES)
             os.mkdir(CSV_FILES)
             os.mkdir(RAW_DATA)
+            os.mkdir(CLEAN_DATA)
         
         except FileExistsError as e:
             pass    
@@ -106,7 +108,11 @@ def _transform_ves(filename):
                 .apply(lambda x: x.replace('.',''))
                 .apply(lambda x: int(x[:7]) if x.count(',') >= 1 else int(x)) 
                 )
-    df['value'] = transform 
+
+    df['value'] = transform
+
+    df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_ves.csv'))
+
     return int(df['value'].mean())           
 
 def _transform_btc_cop(filename):
@@ -123,7 +129,13 @@ def _transform_btc_cop(filename):
                 .apply(lambda x: x[:x.find('.')] + x[x.find('.') + 1:])
                 .apply(lambda x: int(x[:x.find('.')]) if '.' in x else int(x))
                 )
-    df['value'] = transform 
+
+    df['value'] = transform
+
+    if 'usd_cop' in filename:
+        df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_cop.csv'))
+    else:
+        df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_btc.csv'))
     return int(df['value'].mean())
 
 def transform_data():
