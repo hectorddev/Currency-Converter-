@@ -37,9 +37,21 @@ def verify_folder():
         try:
             os.mkdir(EXPORT)
             os.mkdir(TRANSFORM)
-        
-        except FileExistsError as e:
+        except FileExistsError:
+            pass
+
+    elif not 'export' in WDIR_IN:
+        try:
+            os.mkdir(EXPORT)
+        except FileExistsError:
             pass    
+
+    elif not 'transform' in WDIR_IN:
+        try:
+            os.mkdir(TRANSFORM)
+        except FileExistsError:
+            pass    
+
 
 def _create_csv():
     """
@@ -93,6 +105,12 @@ def verify():
     if not os.listdir(TRANSFORM):
         os.mkdir(CLEAN_DATA)
         os.mkdir(RAW_DATA)
+
+    elif not 'clean_data' in os.listdir(TRANSFORM):
+        os.mkdir(CLEAN_DATA)
+
+    elif not 'raw_data' in os.listdir(TRANSFORM):
+        os.mkdir(RAW_DATA)    
 
 def _writeJson(data):
     """
