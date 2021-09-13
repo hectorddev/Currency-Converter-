@@ -1,4 +1,6 @@
 clean_data/
+transform/
+export/
 raw_data/
 # Byte-compiled / optimized / LL files
 __pycache__/

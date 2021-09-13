@@ -11,10 +11,13 @@ WDIR_IN = os.listdir(WDIR)
 
 #Carpetas de archivos
 
-JSON_FILES = os.path.join(WDIR,'json_files')
-CSV_FILES = os.path.join(WDIR,'history_files')
-RAW_DATA = os.path.join(WDIR,'raw_data')
-CLEAN_DATA = os.path.join(WDIR,'clean_data')
+EXPORT = os.path.join(WDIR,'export')
+JSON_FILES = os.path.join(EXPORT,'json_files')
+CSV_FILES = os.path.join(EXPORT,'history_files')
+
+TRANSFORM = os.path.join(WDIR,'transform')
+RAW_DATA = os.path.join(TRANSFORM,'raw_data')
+CLEAN_DATA = os.path.join(TRANSFORM,'clean_data')
 
 #Fecha
 
@@ -30,46 +33,66 @@ def verify_folder():
     a function that verifies if exits the folders that we need in the project
     if not, it creates those folders
     """
-    if not 'history_files' in WDIR_IN and not 'json_files' in WDIR_IN and not 'raw_data' in WDIR_IN and not 'clean_data' in WDIR_IN:
+    if not 'export' in WDIR_IN and not 'transform' in WDIR_IN:
         try:
-            os.mkdir(JSON_FILES)
-            os.mkdir(CSV_FILES)
-            os.mkdir(RAW_DATA)
-            os.mkdir(CLEAN_DATA)
+            os.mkdir(EXPORT)
+            os.mkdir(TRANSFORM)
         
         except FileExistsError as e:
             pass    
 
-def create_csv():
+def _create_csv():
     """
     A function that creates a csv file
     """
-    with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
-        writer = csv.writer(outfile)
-        writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
+    if not 'history_files' in os.listdir(EXPORT):
+        os.mkdir(CSV_FILES)
+        with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
+            writer = csv.writer(outfile)
+            writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
 
-def create_json():
+    elif 'history_files' in os.listdir(EXPORT):
+        if not os.listdir(CSV_FILES):
+            with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
+                writer = csv.writer(outfile)
+                writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
+        else:
+            pass       
+
+def _create_json():
     """
     A function that create a json file
-    """  
-    dictionary ={}
+    """
+    if not 'json_files' in os.listdir(EXPORT):
+        os.mkdir(JSON_FILES)
+        dictionary ={}
+        with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
+            json.dump(dictionary, outfile)
 
-    with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
-        json.dump(dictionary, outfile)
+    else:
+        if os.listdir(JSON_FILES):
+            f = os.path.join(JSON_FILES,os.listdir(JSON_FILES)[0])
+            os.remove(f)
+            dictionary ={}
+            with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
+                json.dump(dictionary, outfile)
+
+        elif not os.listdir(JSON_FILES):
+            dictionary ={}
+            with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
+                json.dump(dictionary, outfile) 
 
 def verify():
     """
     A function that verfies if the csv and json files are in his folders
     if not it calls the function that create it 
     """
-    if not os.listdir(CSV_FILES):
-        create_csv()
-    if os.listdir(JSON_FILES):
-        f = os.path.join(JSON_FILES,os.listdir(JSON_FILES)[0])
-        os.remove(f)
-        create_json()
-    else:
-        create_json()  
+    _create_csv()
+    _create_json()
+
+    if not os.listdir(TRANSFORM):
+        os.mkdir(CLEAN_DATA)
+        os.mkdir(RAW_DATA)
 
 def _writeJson(data):
     """
@@ -97,7 +120,7 @@ def _writeCsv(data):
 def _transform_ves(filename):
     """
     A function that transform raw data into a clean data using pandas
-    it recieves a list and returns an int
+    it recieves a str (path) and returns an int
     """
     df = pd.read_csv(filename)
     transform = (df['value']
@@ -118,7 +141,7 @@ def _transform_ves(filename):
 def _transform_btc_cop(filename):
     """
     A function that transform raw data into clean data usinf pandas
-    it recieves a list and return an int
+    it recieves a str (path) and return an int
     """
     df = pd.read_csv(filename)
     transform = (df['value']
