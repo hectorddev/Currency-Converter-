@@ -128,12 +128,11 @@ def _writeCsv(data):
     A function that recieves the save transformed data in a csv file
     it recieves a list
     """
-    content = sorted(data)
-    content.append(DATE)
+    data.append(DATE)
     #Adding data in a csv file   
     with open(os.path.join(CSV_FILES,CSV_FILENAME), 'a',newline='') as outfile:
         writer = csv.writer(outfile)
-        writer.writerow(content)  
+        writer.writerow(data)  
 
 def _transform_ves(filename):
     """
@@ -186,5 +185,5 @@ def transform_data():
     mean_usd_cop = _transform_btc_cop(os.path.join(RAW_DATA,'raw_usd_cop.csv'))
     mean_usd_btc = _transform_btc_cop(os.path.join(RAW_DATA,'raw_usd_btc.csv'))
     mean_usd_ves = _transform_ves(os.path.join(RAW_DATA,'raw_usd_ves.csv'))
-    _writeCsv([mean_usd_btc,mean_usd_cop,mean_usd_ves])
+    _writeCsv([mean_usd_cop,mean_usd_btc,mean_usd_ves])
     _writeJson({'mean_usd_cop':mean_usd_cop,'mean_usd_btc':mean_usd_btc,'mean_usd_ves':mean_usd_ves})
