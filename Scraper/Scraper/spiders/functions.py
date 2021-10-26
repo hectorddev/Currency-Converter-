@@ -143,18 +143,17 @@ def _transform_ves(filename):
     df = pd.read_csv(filename)
     transform = (df['value']
                 .apply(lambda x: x.replace('VES',''))
-                .apply(lambda x: x.replace('\r',''))
+                .apply(lambda x: x.replace(',','.'))
                 .apply(lambda x: x.replace('\n',''))
-                .apply(lambda x: x.replace(' ',''))
-                .apply(lambda x: x.replace('.',''))
-                .apply(lambda x: int(x[:7]) if x.count(',') >= 1 else int(x)) 
+                .apply(lambda x: x.replace('\r',''))
+                .apply(lambda x: float(x))
                 )
 
     df['value'] = transform
 
     df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_ves.csv'))
 
-    return int(df['value'].mean())           
+    return round(df['value'].mean(),2)
 
 def _transform_btc_cop(filename):
     """
