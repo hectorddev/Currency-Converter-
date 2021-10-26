@@ -1,6 +1,9 @@
 import scrapy
 import os
 import pandas as pd
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+from functions import verify, verify_folder, transform_data
 
 #Paginas de dolar-pesos
 
@@ -129,3 +132,12 @@ class usd_ves(scrapy.Spider):
 
         df = pd.DataFrame(kwargs)
         df.to_csv(os.path.join(RAW_PATH,'raw_usd_ves.csv'))
+
+verify_folder()
+verify()
+proccess = CrawlerProcess()
+proccess.crawl(usd_cop)
+proccess.crawl(usd_btc)
+proccess.crawl(usd_ves)
+proccess.start()
+transform_data()
