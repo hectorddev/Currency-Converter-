@@ -13,12 +13,10 @@ const Home = () => {
     })
 
     const handleInputChange = (event) => {
-        console.log(event.target.value)
         setMoney({
             ...money,
             [event.target.name] : event.target.value 
         })
-        console.log(money)
     }
 
 

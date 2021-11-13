@@ -25,7 +25,7 @@ const Converter = () => {
         }
         new Conection()
         .then(response => {
-            const objConverter = response.data[0]
+            const objConverter = response.data
             const convertion = convertidor(objBase, objConverter)
             setResult(convertion)
         })

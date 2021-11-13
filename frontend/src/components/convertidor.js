@@ -6,6 +6,7 @@ import converterBtc from './converterBtc'
 const convertidor = (valuesUser, mean_currencies) => {
     const {currency, value1, value2} = valuesUser
 
+    
         
     if(value1 === value2){
         return new Intl.NumberFormat().format(currency)
