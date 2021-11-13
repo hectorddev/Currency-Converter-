@@ -4,6 +4,7 @@ const router = require('./routes/routes.js')
 const cors = require('cors')
 
 
+
 const app = express()
 const port = 5500
 
@@ -21,9 +22,6 @@ app.use(express.json({limit: "50mb"}))
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
 
-/* app.get('/', (req, res) =>{
-    res.send('Hello!')
-}) */
 
 app.use(router)
 app.use('/api/converter', router)

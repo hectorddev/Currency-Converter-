@@ -3,6 +3,7 @@ const router = express.Router()
 const doc = require('../../export/json_files/mean_currencies.json')
 
 
+
 router.get('/', (req, res) =>{
     res.json(doc)
 })
