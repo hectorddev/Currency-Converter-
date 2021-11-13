@@ -1,0 +1,10 @@
+{
+    "presets": [
+        "@babel/preset-env", //Compila ES y ES6
+        "@babel/preset-react" //Compila jsx y el estandar de React         
+    ],
+    "plugins": [
+        "@babel/transform-runtime"
+    ]
+}
+    
