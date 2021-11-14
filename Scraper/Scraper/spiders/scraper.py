@@ -2,7 +2,6 @@ import scrapy
 import os
 import pandas as pd
 from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
 from functions import verify, verify_folder, transform_data
 
 #Paginas de dolar-pesos
@@ -135,7 +134,11 @@ class usd_ves(scrapy.Spider):
 
 verify_folder()
 verify()
-proccess = CrawlerProcess()
+proccess = CrawlerProcess(
+    {
+    'USER_AGENT': "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36",
+    }
+)
 proccess.crawl(usd_cop)
 proccess.crawl(usd_btc)
 proccess.crawl(usd_ves)
