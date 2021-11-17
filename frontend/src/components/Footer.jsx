@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="Footer">
             <nav className="navbar navbar-light bg-light">
                 <div className="container">
-                    Copy
+                    
                 </div>
             </nav>
         </div>

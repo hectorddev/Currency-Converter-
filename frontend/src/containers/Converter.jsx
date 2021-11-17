@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import convertidor from '../components/convertidor.js'
 
+import '../styles/Converter.css'
+
 const Converter = () => {
     const {money, value1, value2} = useParams()
     const objBase = {
@@ -32,11 +34,12 @@ const Converter = () => {
     })
 
     return (
-        <div>
+        <div className="container">
+            
             <h1>{result}</h1>
             
             <Link to="/">            
-            <button type="button">Volver</button>
+            <button className="button" type="button">Reset</button>
             </Link>
         </div>
        

@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import Layout from '../components/Layout.jsx'
 import Home from '../containers/Home.jsx'
 import Converter from '../containers/Converter.jsx'
-
+import '../styles/App.css'
 
 const App = () => {
     return (
