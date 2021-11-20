@@ -161,13 +161,12 @@ def _transform_btc_cop(filename):
     """
     df = pd.read_csv(filename)
     transform = (df['value']
-                .apply(lambda x: x.replace(',','.'))
-                .apply(lambda x: x.replace('$',''))
                 .apply(lambda x: x.replace('\n',''))
+                .apply(lambda x: x.replace('$',''))
                 .apply(lambda x: x.replace(' ',''))
-                .apply(lambda x: x[:x.find('.')] + x[x.find('.') + 1:])
-                .apply(lambda x: int(x[:x.find('.')]) if '.' in x else int(x))
-                )
+                .apply(lambda x: x[:6])
+                .apply(lambda x: x.replace(',',''))
+                .apply(lambda x: int(x.replace('.',''))))
 
     df['value'] = transform
 
