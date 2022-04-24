@@ -37,7 +37,7 @@ class usd_cop(scrapy.Spider):
     ]
     
     def parse(self, response):
-        investing_currency = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
+        investing_currency = response.xpath('//div[contains(@class,"instrument-price")]/span[@data-test="instrument-price-last" and @class="text-2xl"]/text()').get()
         if investing_currency:
             yield response.follow(USD_COL['mataf'], callback=self.mataf, cb_kwargs={'name':['investing'],'value':[investing_currency]})
         else:
@@ -201,7 +201,7 @@ class usd_ves(scrapy.Spider):
     ]
 
     def parse(self, response):
-        investing_currency_ves = response.xpath('//div[contains(@class,"overViewBox")]//div[contains(@class,"top")]/span[@id="last_last"]/text()').get()
+        investing_currency_ves = response.xpath('//div[contains(@class,"instrument-price")]/span[@data-test="instrument-price-last" and @class="text-2xl"]/text()').get()
         if investing_currency_ves:
             yield response.follow(USD_VES['valutafx'], callback = self.valutafx, cb_kwargs={'name':['investing'],'value':[investing_currency_ves]})
         else:
