@@ -166,7 +166,8 @@ def _transform_btc_cop(filename):
                 .apply(lambda x: x.replace(' ',''))
                 .apply(lambda x: x[:6])
                 .apply(lambda x: x.replace(',',''))
-                .apply(lambda x: int(x.replace('.',''))))
+                .apply(lambda x: int(x.replace('.','')))
+                )
 
     df['value'] = transform
 
@@ -174,6 +175,7 @@ def _transform_btc_cop(filename):
         df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_cop.csv'))
     else:
         df.to_csv(os.path.join(CLEAN_DATA,'clean_usd_btc.csv'))
+        
     return int(df['value'].mean())
 
 def transform_data():
