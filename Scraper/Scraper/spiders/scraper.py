@@ -17,7 +17,7 @@ USD_COL = {'mataf': 'https://www.mataf.net/es/cambio/divisas-USD-COP', 'dolar_co
 
 # 1 investing = https://es.investing.com/crypto/bitcoin
 
-USD_BTC = {'coinmarketcap':'https://coinmarketcap.com/es/currencies/bitcoin/','coindesk':'https://www.coindesk.com/price/bitcoin/',
+USD_BTC = {'coinmarketcap':'https://coinmarketcap.com/es/currencies/bitcoin/','coin_telegraph':'https://cointelegraph.com/bitcoin-price',
 'marketwatch':'https://www.marketwatch.com/investing/cryptocurrency/btcusd', 'yahoo_finance':'https://finance.yahoo.com/quote/BTC-USD'}
 
 #Paginas de dolar-bolivares
@@ -140,33 +140,33 @@ class usd_btc(scrapy.Spider):
         if coinmarket_currency_btc:
             kwargs['name'].append('coinmarketcap')
             kwargs['value'].append(coinmarket_currency_btc)
-            yield response.follow(USD_BTC['coindesk'], callback = self.coindesk, cb_kwargs=kwargs)
+            yield response.follow(USD_BTC['coin_telegraph'], callback = self.coin_telegraph, cb_kwargs=kwargs)
         else:
             print('\n'
                 'There is a problem with the xpath sentence \n'
                 'Spider: usd_btc \n'
                 'method: coinmarketcap \n'
-                f'page: {USD_BTC:["coinmarketcap"]} \n'
+                f'page: {USD_BTC["coinmarketcap"]} \n'
                 )
             kwargs['name'].append('coinmarketcap')
             kwargs['value'].append('not available')
-            yield response.follow(USD_BTC['coindesk'], callback = self.coindesk, cb_kwargs=kwargs)          
+            yield response.follow(USD_BTC['coin_telegraph'], callback = self.coin_telegraph, cb_kwargs=kwargs)          
 
-    def coindesk(self, response, **kwargs):
-        coindesk_currency_btc = response.xpath('//div[@display="grid"]/div[@color]/span[2]/text()').get()
-        if coindesk_currency_btc:
-            kwargs['name'].append('coindesk')
-            kwargs['value'].append(coindesk_currency_btc)
+    def coin_telegraph(self, response, **kwargs):
+        coin_telegraph_currency_btc = response.xpath('//span[@class="price-value" and contains(text(),"$")]/text()').get()
+        if coin_telegraph_currency_btc:
+            kwargs['name'].append('coin_telegraph')
+            kwargs['value'].append(coin_telegraph_currency_btc)
             yield response.follow(USD_BTC['marketwatch'], callback = self.market_watch, cb_kwargs= kwargs)
         else:
             print('\n'
                 'There is a problem with the xpath sentence \n'
                 'Spider: usd_btc \n'
-                'method: coindesk \n'
-                f'page: {USD_BTC:["coindesk"]} \n'
+                'method: coin_telegraph \n'
+                f'page: {USD_BTC["coin_telegraph"]} \n'
                 )  
-            kwargs['name'].append('coindesk')
-            kwargs['value'].append('not available')
+            kwargs['name'].append('coin_telegraph')
+            kwargs['value'].append('not_available')
             yield response.follow(USD_BTC['marketwatch'], callback = self.market_watch, cb_kwargs= kwargs)
 
     def market_watch(self, response, **kwargs):
@@ -180,7 +180,7 @@ class usd_btc(scrapy.Spider):
                 'There is a problem with the xpath sentence \n'
                 'Spider: usd_btc \n'
                 'method: market_watch \n'
-                f'page: {USD_BTC:["marketwatch"]} \n'
+                f'page: {USD_BTC["marketwatch"]} \n'
                 )  
             kwargs['name'].append('market_watch')
             kwargs['value'].append('not available')
@@ -224,7 +224,7 @@ class usd_ves(scrapy.Spider):
                 'There is a problem with the xpath sentence \n'
                 'Spider: usd_ves \n'
                 'method: valutafx \n'
-                f'page: {USD_BTC:["valutafx"]}'
+                f'page: {USD_BTC["valutafx"]}'
                 )
             kwargs['name'].append('valuta')
             kwargs['value'].append('not available')
