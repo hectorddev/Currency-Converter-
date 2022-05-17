@@ -4,7 +4,7 @@ import pandas as pd
 from twisted.internet import reactor
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
-from functions import verify, verify_folder, transform_data
+from functions import verify, verify_folder, transform_data, error_message
 
 #Paginas de dolar-pesos
 
@@ -41,12 +41,7 @@ class usd_cop(scrapy.Spider):
         if investing_currency:
             yield response.follow(USD_COL['mataf'], callback=self.mataf, cb_kwargs={'name':['investing'],'value':[investing_currency]})
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_cop \n'
-                'method: parse \n'
-                'page: https://es.investing.com/currencies/usd-cop \n'
-                )
+            error_message('usd_cop','parse','https://es.investing.com/currencies/usd-cop')
             yield response.follow(USD_COL['mataf'], callback=self.mataf, cb_kwargs={'name':['investing'],'value':['not available']})        
 
     def mataf(self, response, **kwargs):
@@ -57,12 +52,7 @@ class usd_cop(scrapy.Spider):
             kwargs['value'].append(mataf_currency)
             yield response.follow(USD_COL['dolar_colombia'], callback=self.dolar_colombia ,cb_kwargs=kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_cop \n'
-                'method: mataf \n'
-                f'page: {USD_COL["mataf"]} \n'
-                )
+            error_message('usd_cop','mataf',USD_COL['mataf'])
             kwargs['name'].append('mataf')
             kwargs['value'].append('not available')
             yield response.follow(USD_COL['dolar_colombia'], callback=self.dolar_colombia ,cb_kwargs=kwargs)       
@@ -74,12 +64,7 @@ class usd_cop(scrapy.Spider):
             kwargs['value'].append(dolar_colombia_currency)
             yield response.follow(USD_COL['cotizacion'], callback=self.cotizacion, cb_kwargs=kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_cop \n'
-                'method: dolar_colombia \n'
-                f'page: {USD_COL["dolar_colombia"]} \n'
-                )
+            error_message('usd_cop','dolar_colombia',USD_COL['dolar_colombia'])
             kwargs['name'].append('dolar_colombia')
             kwargs['value'].append('not available')
             yield response.follow(USD_COL['cotizacion'], callback=self.cotizacion, cb_kwargs=kwargs)        
@@ -91,12 +76,7 @@ class usd_cop(scrapy.Spider):
             kwargs['value'].append(cotizacion_currency)
             yield response.follow(USD_COL['dolar_web'], callback=self.dolar_web, cb_kwargs=kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_cop \n'
-                'method: cotizacion \n'
-                f'page: {USD_COL["cotizacion"]} \n'
-                ) 
+            error_message('usd_cop','cotizacion',USD_COL['cotizacion'])
             kwargs['name'].append('cotizacion.co')
             kwargs['value'].append('not available')
             yield response.follow(USD_COL['dolar_web'], callback=self.dolar_web, cb_kwargs=kwargs)       
@@ -127,12 +107,7 @@ class usd_btc(scrapy.Spider):
         if investing_currency_btc:
             yield response.follow(USD_BTC['coinmarketcap'], callback= self.coinmarketcap, cb_kwargs={'name':['investing'],'value':[investing_currency_btc]})
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_btc \n'
-                'method: parse \n'
-                'page: https://es.investing.com/crypto/bitcoin \n'
-                ) 
+            error_message('usd_btc','parse',USD_BTC['https://es.investing.com/crypto/bitcoin'])
         yield response.follow(USD_BTC['coinmarketcap'], callback= self.coinmarketcap, cb_kwargs={'name':['investing'],'value':['not available']})           
 
     def coinmarketcap(self, response, **kwargs):
@@ -142,12 +117,7 @@ class usd_btc(scrapy.Spider):
             kwargs['value'].append(coinmarket_currency_btc)
             yield response.follow(USD_BTC['coin_telegraph'], callback = self.coin_telegraph, cb_kwargs=kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_btc \n'
-                'method: coinmarketcap \n'
-                f'page: {USD_BTC["coinmarketcap"]} \n'
-                )
+            error_message('usd_btc','coinmarketcap',USD_BTC['coinmarketcap'])
             kwargs['name'].append('coinmarketcap')
             kwargs['value'].append('not available')
             yield response.follow(USD_BTC['coin_telegraph'], callback = self.coin_telegraph, cb_kwargs=kwargs)          
@@ -159,12 +129,7 @@ class usd_btc(scrapy.Spider):
             kwargs['value'].append(coin_telegraph_currency_btc)
             yield response.follow(USD_BTC['marketwatch'], callback = self.market_watch, cb_kwargs= kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_btc \n'
-                'method: coin_telegraph \n'
-                f'page: {USD_BTC["coin_telegraph"]} \n'
-                )  
+            error_message('usd_btc','coin_telegraph',USD_BTC['coin_telegraph'])
             kwargs['name'].append('coin_telegraph')
             kwargs['value'].append('not_available')
             yield response.follow(USD_BTC['marketwatch'], callback = self.market_watch, cb_kwargs= kwargs)
@@ -176,12 +141,7 @@ class usd_btc(scrapy.Spider):
             kwargs['value'].append(market_watch_currency_btc)
             yield response.follow(USD_BTC['yahoo_finance'], callback = self.yahoo_finance, cb_kwargs= kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_btc \n'
-                'method: market_watch \n'
-                f'page: {USD_BTC["marketwatch"]} \n'
-                )  
+            error_message('usd_btc','marketwatch',USD_BTC['marketwatch'])
             kwargs['name'].append('market_watch')
             kwargs['value'].append('not available')
             yield response.follow(USD_BTC['yahoo_finance'], callback = self.yahoo_finance, cb_kwargs= kwargs)    
@@ -205,12 +165,7 @@ class usd_ves(scrapy.Spider):
         if investing_currency_ves:
             yield response.follow(USD_VES['valutafx'], callback = self.valutafx, cb_kwargs={'name':['investing'],'value':[investing_currency_ves]})
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_ves \n'
-                'method: parse \n'
-                'page: https://es.investing.com/currencies/usd-vef \n'
-                )  
+            error_message('usd_ves','parse',USD_VES['https://es.investing.com/currencies/usd-vef'])
             yield response.follow(USD_VES['valutafx'], callback = self.valutafx, cb_kwargs={'name':['investing'],'value':['not available']})
 
     def valutafx(self, response, **kwargs):
@@ -220,12 +175,7 @@ class usd_ves(scrapy.Spider):
             kwargs['value'].append(valuta_currency_ves)
             yield response.follow(USD_VES['exchange'], callback = self.exchange_rates, cb_kwargs= kwargs)
         else:
-            print('\n'
-                'There is a problem with the xpath sentence \n'
-                'Spider: usd_ves \n'
-                'method: valutafx \n'
-                f'page: {USD_BTC["valutafx"]}'
-                )
+            error_message('usd_ves','valutafx',USD_VES['valutafx'])
             kwargs['name'].append('valuta')
             kwargs['value'].append('not available')
             yield response.follow(USD_VES['exchange'], callback = self.exchange_rates, cb_kwargs= kwargs)      
@@ -238,23 +188,24 @@ class usd_ves(scrapy.Spider):
         df = pd.DataFrame(kwargs)
         df.to_csv(os.path.join(RAW_PATH,'raw_usd_ves.csv'))
 
-verify_folder()
-verify()
+if __name__ == '__main__':
+    verify_folder()
+    verify()
 
-configure_logging()
-runner = CrawlerRunner(
-    {
-    'USER_AGENT': "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36",
-    }
-)
+    configure_logging()
+    runner = CrawlerRunner(
+        {
+        'USER_AGENT': "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36",
+        }
+    )
 
-runner.crawl(usd_cop)
-runner.crawl(usd_btc)
-runner.crawl(usd_ves)
+    runner.crawl(usd_cop)
+    runner.crawl(usd_btc)
+    runner.crawl(usd_ves)
 
-d = runner.join()
-d.addBoth(lambda _: reactor.stop())
+    d = runner.join()
+    d.addBoth(lambda _: reactor.stop())
 
-reactor.run()
+    reactor.run()
 
-transform_data()
+    transform_data()

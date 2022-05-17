@@ -93,6 +93,20 @@ def _create_json():
             with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
                 json.dump(dictionary, outfile) 
 
+def error_message(spider=str,method=str,page=str):
+    """"
+    A simple print function that show some neccesary data when a error occur
+    spider is the name of the class and <str>
+    method is the name of the method <str>
+    page is the url <str>
+    """
+    print('\n'
+            'There is a problem with the xpath sentence \n'
+            f'Spider: {spider} \n'
+            f'method: {method} \n'
+            f'page: {page} \n'
+         ) 
+
 def verify():
     """
     A function that verfies if the csv and json files are in his folders
