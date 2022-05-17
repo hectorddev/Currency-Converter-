@@ -33,14 +33,14 @@ def verify_folder():
     a function that verifies if exits the folders that we need in the project
     if not, it creates those folders
     """
-    if not 'export' in WDIR_IN and not 'transform' in WDIR_IN:
+    if not 'export' in WDIR_IN and not 'transform' in WDIR_IN: #check if there are no such folders it creates it
         try:
             os.mkdir(EXPORT)
             os.mkdir(TRANSFORM)
         except FileExistsError:
             pass
 
-    elif not 'export' in WDIR_IN:
+    elif not 'export' in WDIR_IN: #check if not "export" folder 
         try:
             os.mkdir(EXPORT)
         except FileExistsError:
@@ -48,7 +48,7 @@ def verify_folder():
 
     elif not 'transform' in WDIR_IN:
         try:
-            os.mkdir(TRANSFORM)
+            os.mkdir(TRANSFORM) #check if not "transform" folder
         except FileExistsError:
             pass    
 
@@ -57,39 +57,38 @@ def _create_csv():
     """
     A function that creates a csv file
     """
-    if not 'history_files' in os.listdir(EXPORT):
+    if not 'history_files' in os.listdir(EXPORT): #check if not "history" folder in EXPORT dir
         os.mkdir(CSV_FILES)
         with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
             writer = csv.writer(outfile)
             writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
 
-    elif 'history_files' in os.listdir(EXPORT):
+    elif 'history_files' in os.listdir(EXPORT): #check if "history" folder in EXPORT dir
         if not os.listdir(CSV_FILES):
             with open(os.path.join(CSV_FILES, CSV_FILENAME), 'w') as outfile:
                 writer = csv.writer(outfile)
                 writer.writerow(['mean_usd_cop','mean_usd_btc','mean_usd_ves','date'])
-        else:
-            pass       
+
 
 def _create_json():
     """
     A function that create a json file
     """
-    if not 'json_files' in os.listdir(EXPORT):
+    if not 'json_files' in os.listdir(EXPORT): #check if not "json_files" folder in EXPORT dir
         os.mkdir(JSON_FILES)
         dictionary ={}
         with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
             json.dump(dictionary, outfile)
 
-    else:
-        if os.listdir(JSON_FILES):
+    else: #other conditionals
+        if os.listdir(JSON_FILES): #check if something in "json_files" DIR 
             f = os.path.join(JSON_FILES,os.listdir(JSON_FILES)[0])
             os.remove(f)
             dictionary ={}
             with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
                 json.dump(dictionary, outfile)
 
-        elif not os.listdir(JSON_FILES):
+        elif not os.listdir(JSON_FILES): #check if "json_files" is empty
             dictionary ={}
             with open(os.path.join(JSON_FILES, JSON_FILENAME), "w") as outfile:
                 json.dump(dictionary, outfile) 
@@ -102,14 +101,14 @@ def verify():
     _create_csv()
     _create_json()
 
-    if not os.listdir(TRANSFORM):
+    if not os.listdir(TRANSFORM): #check if "CLEAN DATA" and "RAW_DATA" folders exits in transform dir
         os.mkdir(CLEAN_DATA)
         os.mkdir(RAW_DATA)
 
-    elif not 'clean_data' in os.listdir(TRANSFORM):
+    elif not 'clean_data' in os.listdir(TRANSFORM): #check "CLEAN_DATA" in transform dir
         os.mkdir(CLEAN_DATA)
 
-    elif not 'raw_data' in os.listdir(TRANSFORM):
+    elif not 'raw_data' in os.listdir(TRANSFORM): #check "RAW_DATA" in transform dir
         os.mkdir(RAW_DATA)    
 
 def _writeJson(data):
